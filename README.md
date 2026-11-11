@@ -26,23 +26,3 @@ npm run preview
 The app reads a dated snapshot of SOA catalog metadata. Run `npm run refresh` with Python 3.9 or newer to fetch a fresh snapshot from the SOA search endpoint, then rerun the checks and build. The snapshot keeps SOA's nation labels, and the explorer displays United States, Colombia, and South Korea for the corresponding catalog labels. Hong Kong and Singapore use point markers at the map's resolution.
 
 The globe uses the [D3 geographic projection library](https://github.com/d3/d3-geo) and [Natural Earth boundaries via World Atlas](https://github.com/topojson/world-atlas). Region codes come from Unicode CLDR via Babel. [React Globe GL's country choropleth](https://github.com/vasturiano/react-globe.gl/tree/master/example/choropleth-countries) was a design reference.
-
-## Deploy to mort.aiactuary.cn
-
-On the Caddy host, prepare a writable site directory for the deployment user. Run the build as that user with Node.js 22.12 or newer, npm, Git, and Bash.
-
-```sh
-sudo install -d -o "$(id -un)" -g "$(id -gn)" -m 0755 /srv/mort.aiactuary.cn
-curl -fsSL https://raw.githubusercontent.com/ferryhe/IncidenceTables/main/scripts/deploy.sh \
-  -o /srv/mort.aiactuary.cn/deploy.sh
-bash /srv/mort.aiactuary.cn/deploy.sh
-```
-
-The script downloads `main`, tests and builds a release, then atomically points Caddy at it. Previous releases stay in `/srv/mort.aiactuary.cn/releases`. To deploy a new commit, run the script again.
-
-For the initial setup, point the `mort` A record at the Caddy host, add the site block from [deploy/Caddyfile](deploy/Caddyfile) to the active Caddyfile, then validate and reload Caddy.
-
-```sh
-sudo caddy validate --config /etc/caddy/Caddyfile
-sudo systemctl reload caddy
-```

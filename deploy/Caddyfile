@@ -1,7 +1,0 @@
-mort.aiactuary.cn {
-	root * /srv/mort.aiactuary.cn/current
-	encode gzip
-	@catalog path / /index.html /catalog.json
-	header @catalog Cache-Control "no-cache"
-	file_server
-}
